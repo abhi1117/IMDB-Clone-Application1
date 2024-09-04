@@ -16,11 +16,29 @@ const MovieList = () => {
         getData()
     }, [type])
 
+    // const getData = () => {
+    //     fetch(`https://api.themoviedb.org/3/movie/${type ? type : "popular"}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`)
+    //     .then(res => res.json())
+    //     .then(data => setMovieList(data.results))
+    // }
+
+
     const getData = () => {
-        fetch(`https://api.themoviedb.org/3/movie/${type ? type : "popular"}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`)
-        .then(res => res.json())
-        .then(data => setMovieList(data.results))
-    }
+      fetch(
+        `https://api.themoviedb.org/3/movie/${
+          type ? type : "popular"
+        }?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const updatedMovies = data.results.map((movie) => ({
+            ...movie,
+            poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          }));
+          setMovieList(updatedMovies);
+        });
+    };
+
 
     return (
         <div className="movie__list">
